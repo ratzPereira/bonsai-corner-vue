@@ -32,8 +32,9 @@ const goToUsersProfile = () => {
 
       <div class="nav-container">
         <div class="right-content">
-          <RouterLink to="/">Instagram</RouterLink>
+          <RouterLink to="/">Bonsai Corner</RouterLink>
           <AInputSearch
+              v-if="user"
               v-model:value="searchUsername"
               placeholder="username"
               style="width: 200px"
