@@ -8,5 +8,6 @@ import Navbar from "@/components/Navbar.vue";</script>
   </main>
 </template>
 
-<style scoped>
+<style>
+
 </style>

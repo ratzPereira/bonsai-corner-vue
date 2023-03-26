@@ -20,6 +20,10 @@ const onSearch = () => {
 const handleLogout = async () => {
   await userStore.handleLogout()
 }
+
+const goToUsersProfile = () => {
+  router.push(`/profile/${user.value.username}`)
+}
 </script>
 <template>
 
@@ -36,13 +40,13 @@ const handleLogout = async () => {
               @search="onSearch"
           />
         </div>
-        <div v-if="!loadingUser">
+        <div v-if="!loadingUser" class="content">
           <div v-if="!user" class="left-content">
             <AuthModal :is-login="false"></AuthModal>
             <AuthModal :is-login="true"></AuthModal>
           </div>
           <div v-else class="left-content">
-            <AButton type="primary">Profile</AButton>
+            <AButton type="primary" @click="goToUsersProfile">Profile</AButton>
             <AButton :onclick="handleLogout" type="primary">Logout</AButton>
           </div>
         </div>
@@ -54,9 +58,15 @@ const handleLogout = async () => {
 </template>
 
 <style scoped>
+
 .nav-container {
   display: flex;
   justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  align-items: center;
 }
 
 .right-content {
@@ -69,8 +79,8 @@ const handleLogout = async () => {
 }
 
 .left-content {
-  align-items: center;
   display: flex;
+  align-items: center;
 }
 
 .left-content button {

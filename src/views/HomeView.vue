@@ -6,3 +6,7 @@ import Timeline from "@/components/Timeline.vue";</script>
     <Timeline></Timeline>
   </main>
 </template>
+
+<style>
+
+</style>
