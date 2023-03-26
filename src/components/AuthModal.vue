@@ -65,7 +65,6 @@ const title = props.isLogin ? 'Login' : 'Signup';
   </div>
 </template>
 
-
 <style scoped>
 .btn {
   margin-left: 10px;

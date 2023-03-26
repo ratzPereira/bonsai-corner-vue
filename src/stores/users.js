@@ -31,10 +31,11 @@ export const useUserStore = defineStore("users", () => {
       .then((response) => {
         user.value = {
           email: response.data.email,
-          password: response.data.password,
+          username: response.data.username,
           id: response.data.id,
         };
 
+        console.log({ user });
         localStorage.setItem("token", JSON.stringify(response.data.token));
         token.value = response.data.token;
       })
@@ -69,7 +70,7 @@ export const useUserStore = defineStore("users", () => {
       .then((response) => {
         user.value = {
           email: response.data.email,
-          password: response.data.password,
+          username: response.data.username,
           id: response.data.id,
         };
 
@@ -84,9 +85,31 @@ export const useUserStore = defineStore("users", () => {
     loading.value = false;
   };
 
-  const getUser = async () => {};
+  const getUser = async () => {
+    loadingUser.value = true;
 
-  const handleLogout = async () => {};
+    await axios
+      .get("/auth/user")
+      .then((response) => {
+        console.log({ response });
+        user.value = {
+          email: response.data.email,
+          username: response.data.username,
+          id: response.data.id,
+        };
+        console.log({ user });
+      })
+      .catch((error) => {
+        errorMessage.value = error.message;
+      });
+
+    loadingUser.value = false;
+  };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("token");
+    user.value = null;
+  };
 
   const clearErrorMessage = () => {
     return (errorMessage.value = "");

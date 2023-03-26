@@ -9,8 +9,8 @@ import {storeToRefs} from "pinia";
 const router = useRouter();
 const userStore = useUserStore();
 const searchUsername = ref('')
-const isAuthenticated = ref(false)
 const {user, loadingUser} = storeToRefs(userStore)
+
 const onSearch = () => {
   if (searchUsername.value) {
     router.push(`/profile/${searchUsername.value}`)
