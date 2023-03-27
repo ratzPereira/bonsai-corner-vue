@@ -4,9 +4,10 @@ import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
 import {onMounted} from "vue";
 import {useRoute} from "vue-router";
+import UploadModalPhoto from "@/components/UploadModalPhoto.vue";
 
 const userState = useUserStore();
-const {currentUserProfile, loadingUser} = storeToRefs(userState)
+const {currentUserProfile, loadingUser, user} = storeToRefs(userState)
 
 const route = useRoute();
 const {username} = route.params
@@ -23,13 +24,20 @@ onMounted(() => {
     <div v-if="currentUserProfile">
       <div v-if="!loadingUser" class="profile">
         <img :src="currentUserProfile.image || dummyImage" alt="User Photo" class="profile_image"/>
-        <h2>{{ currentUserProfile.username }}</h2>
+        <UploadModalPhoto v-if="currentUserProfile.username === user.username"></UploadModalPhoto>
+        <ATypographyTitle :level="2">{{ currentUserProfile.username }}</ATypographyTitle>
         <div class="stats">
           <span class="followers">{{ currentUserProfile.followers || 0 }} followers</span>
           <span class="posts">{{ currentUserProfile.posts || 0 }} posts</span>
         </div>
-        <p class="bio">{{ currentUserProfile.bio || '' }}</p>
+        <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>
+        <div class="profile_buttons">
+          <AButton>Follow</AButton>
+          <AButton>Following</AButton>
+        </div>
+
       </div>
+
       <div v-else class="spinner">
         <ASpin/>
       </div>
@@ -74,5 +82,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   height: 85vh;
+}
+
+.profile_buttons {
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
