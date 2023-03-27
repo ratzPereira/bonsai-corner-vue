@@ -19,6 +19,7 @@ const onSearch = () => {
 };
 const handleLogout = async () => {
   await userStore.handleLogout()
+  await router.push('/')
 }
 
 const goToUsersProfile = () => {

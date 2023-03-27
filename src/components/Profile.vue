@@ -14,6 +14,7 @@ const {username} = route.params
 
 const dummyImage = 'https://dreamvilla.life/wp-content/uploads/2017/07/dummy-profile-pic.png'
 onMounted(() => {
+  console.log('profile montado')
   userState.getProfile(username);
 })
 

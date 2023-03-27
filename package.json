@@ -9,6 +9,7 @@
     "test:unit": "vitest"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.12.1",
     "ant-design-vue": "^3.2.16",
     "axios": "^1.3.4",
     "pinia": "^2.0.32",

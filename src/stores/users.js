@@ -116,7 +116,6 @@ export const useUserStore = defineStore("users", () => {
     await axios
       .get("/profile/" + username)
       .then((response) => {
-        console.log("a ir buscar o profile");
         currentUserProfile.value = {
           bio: response.data.profile.bio,
           following: response.data.profile.following,
@@ -125,8 +124,6 @@ export const useUserStore = defineStore("users", () => {
           username: response.data.profile.username,
         };
         loadingUser.value = false;
-        console.log("acabei de buscar o profile");
-        console.log(currentUserProfile);
       })
       .catch((error) => {
         //errorMessage.value = error.message;
@@ -134,10 +131,45 @@ export const useUserStore = defineStore("users", () => {
         loadingUser.value = false;
       });
     //loadingUser.value = false;
+    console.log("o user dps do get");
+    console.log(currentUserProfile);
   };
 
   const clearErrorMessage = () => {
     return (errorMessage.value = "");
+  };
+
+  const handleUserProfileEdit = async (data) => {
+    loadingUser.value = true;
+
+    const userToUpdate = {
+      email: user.value.email,
+      username: user.value.username,
+      image: data.image,
+      bio: data.bio ? data.bio : user.value.bio,
+    };
+    await axios
+      .put("/auth/user", userToUpdate)
+      .then((response) => {
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        console.log(response.data);
+        currentUserProfile.value = {
+          bio: response.data.bio,
+          following: response.data.following,
+          id: response.data.id,
+          image: response.data.image,
+          username: response.data.username,
+        };
+        console.log("o user dps do update");
+        console.log(currentUserProfile.value);
+        loadingUser.value = false;
+      })
+      .catch((error) => {
+        errorMessage.value = error.message;
+        currentUserProfile.value = null;
+        loadingUser.value = false;
+      });
+    loadingUser.value = false;
   };
 
   return {
@@ -153,5 +185,6 @@ export const useUserStore = defineStore("users", () => {
     getUser,
     getProfile,
     clearErrorMessage,
+    handleUserProfileEdit,
   };
 });
