@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import { authGuard } from "@/guards/AuthGuard";
+import PageNotFound from "@/components/PageNotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,11 @@ const router = createRouter({
       name: "profile",
       component: ProfileView,
       beforeEnter: authGuard,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "page not found",
+      component: PageNotFound,
     },
   ],
 });
