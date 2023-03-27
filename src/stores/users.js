@@ -112,6 +112,7 @@ export const useUserStore = defineStore("users", () => {
   };
 
   const getProfile = async (username) => {
+    loadingUser.value = true;
     await axios
       .get("/profile/" + username)
       .then((response) => {
@@ -123,12 +124,16 @@ export const useUserStore = defineStore("users", () => {
           image: response.data.profile.image,
           username: response.data.profile.username,
         };
+        loadingUser.value = false;
         console.log("acabei de buscar o profile");
         console.log(currentUserProfile);
       })
       .catch((error) => {
         //errorMessage.value = error.message;
+        currentUserProfile.value = null;
+        loadingUser.value = false;
       });
+    //loadingUser.value = false;
   };
 
   const clearErrorMessage = () => {

@@ -2,28 +2,16 @@
 import Container from "@/components/Container.vue";
 import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 import {useRoute} from "vue-router";
 
 const userState = useUserStore();
-const {currentUserProfile} = storeToRefs(userState)
+const {currentUserProfile, loadingUser} = storeToRefs(userState)
 
 const route = useRoute();
 const {username} = route.params
 
-const loading = ref(false)
-
-const userData = ref({
-  bio: 'This is my bio',
-  photo: 'https://via.placeholder.com/150',
-  followers: 100,
-  following: 50,
-  username: 'John Doe',
-  posts: 20,
-});
-
-const userImage = currentUserProfile.image ? currentUserProfile.image : userData.value.photo
-
+const dummyImage = 'https://dreamvilla.life/wp-content/uploads/2017/07/dummy-profile-pic.png'
 onMounted(() => {
   userState.getProfile(username);
 })
@@ -32,17 +20,22 @@ onMounted(() => {
 
 <template>
   <Container>
-    <div v-if="!loading" class="profile">
-      <img :src="userImage" alt="User Photo"/>
-      <h2>{{ currentUserProfile.username }}</h2>
-      <div class="stats">
-        <span class="followers">{{ userData.followers }} followers</span>
-        <span class="posts">{{ userData.posts }} posts</span>
+    <div v-if="currentUserProfile">
+      <div v-if="!loadingUser" class="profile">
+        <img :src="currentUserProfile.image || dummyImage" alt="User Photo" class="profile_image"/>
+        <h2>{{ currentUserProfile.username }}</h2>
+        <div class="stats">
+          <span class="followers">{{ currentUserProfile.followers || 0 }} followers</span>
+          <span class="posts">{{ currentUserProfile.posts || 0 }} posts</span>
+        </div>
+        <p class="bio">{{ currentUserProfile.bio || '' }}</p>
       </div>
-      <p class="bio">{{ userData.bio }}</p>
+      <div v-else class="spinner">
+        <ASpin/>
+      </div>
     </div>
-    <div v-else class="spinner">
-      <ASpin/>
+    <div v-if="!currentUserProfile && !loadingUser">
+      <h2>User Not Found</h2>
     </div>
   </Container>
 </template>
@@ -59,6 +52,11 @@ onMounted(() => {
   margin-top: 10px;
   display: flex;
   justify-content: center;
+}
+
+.profile_image {
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .stats span {
