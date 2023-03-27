@@ -24,6 +24,8 @@ const handleLogout = async () => {
 
 const goToUsersProfile = () => {
   router.push(`/profile/${user.value.username}`)
+  userStore.getUserFollowers()
+  userStore.getUserFollowings()
 }
 </script>
 <template>

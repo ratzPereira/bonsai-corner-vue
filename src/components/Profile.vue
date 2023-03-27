@@ -7,7 +7,7 @@ import {useRoute} from "vue-router";
 import UploadModalPhoto from "@/components/UploadModalPhoto.vue";
 
 const userState = useUserStore();
-const {currentUserProfile, loadingUser, user} = storeToRefs(userState)
+const {currentUserProfile, loadingUser, user, followingUsers, followedUsers} = storeToRefs(userState)
 
 const route = useRoute();
 const {username} = route.params
@@ -37,7 +37,8 @@ onMounted(() => {
 
         <ATypographyTitle :level="2">{{ currentUserProfile.username }}</ATypographyTitle>
         <div class="stats">
-          <span class="followers">{{ currentUserProfile.followers || 0 }} followers</span>
+          <span class="followers">{{ followedUsers.length || 0 }} followers</span>
+          <span class="following">{{ followingUsers.length || 0 }} following</span>
           <span class="posts">{{ currentUserProfile.posts || 0 }} posts</span>
         </div>
         <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>

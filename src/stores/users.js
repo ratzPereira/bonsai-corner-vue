@@ -9,6 +9,8 @@ export const useUserStore = defineStore("users", () => {
   const loadingUser = ref(false);
   const token = ref("");
   const currentUserProfile = ref(null);
+  const followingUsers = ref([]);
+  const followedUsers = ref([]);
 
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -179,6 +181,23 @@ export const useUserStore = defineStore("users", () => {
     return (errorMessage.value = "");
   };
 
+  const getUserFollowers = async () => {
+    await axios
+      .get("/auth/user/followers")
+      .then((response) => {
+        followedUsers.value = response.data.followers;
+      })
+      .catch((error) => {});
+  };
+  const getUserFollowings = async () => {
+    await axios
+      .get("/auth/user/followings")
+      .then((response) => {
+        followingUsers.value = response.data.followings;
+      })
+      .catch((error) => {});
+  };
+
   return {
     user,
     loading,
@@ -186,6 +205,8 @@ export const useUserStore = defineStore("users", () => {
     token,
     errorMessage,
     currentUserProfile,
+    followingUsers,
+    followedUsers,
     handleLogout,
     handleSignup,
     handleLogin,
@@ -195,5 +216,7 @@ export const useUserStore = defineStore("users", () => {
     handleUserProfileEdit,
     followUser,
     unFollowUser,
+    getUserFollowers,
+    getUserFollowings,
   };
 });
