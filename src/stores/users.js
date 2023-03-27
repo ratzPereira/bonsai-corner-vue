@@ -8,6 +8,7 @@ export const useUserStore = defineStore("users", () => {
   const loading = ref(false);
   const loadingUser = ref(false);
   const token = ref("");
+  const currentUserProfile = ref(null);
 
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -91,7 +92,6 @@ export const useUserStore = defineStore("users", () => {
     await axios
       .get("/auth/user")
       .then((response) => {
-        console.log({ response });
         user.value = {
           email: response.data.email,
           username: response.data.username,
@@ -100,7 +100,7 @@ export const useUserStore = defineStore("users", () => {
         console.log({ user });
       })
       .catch((error) => {
-        errorMessage.value = error.message;
+        //errorMessage.value = error.message;
       });
 
     loadingUser.value = false;
@@ -111,20 +111,42 @@ export const useUserStore = defineStore("users", () => {
     user.value = null;
   };
 
+  const getProfile = async () => {
+    await axios
+      .get("/profile/" + user.value.username)
+      .then((response) => {
+        currentUserProfile.value = {
+          bio: response.data.profile.bio,
+          following: response.data.profile.following,
+          id: response.data.profile.id,
+          image: response.data.profile.image,
+          username: response.data.profile.username,
+        };
+
+        console.log(currentUserProfile);
+        console.log({ response });
+      })
+      .catch((error) => {
+        //errorMessage.value = error.message;
+      });
+  };
+
   const clearErrorMessage = () => {
     return (errorMessage.value = "");
   };
 
   return {
     user,
+    loading,
+    loadingUser,
+    token,
+    errorMessage,
+    currentUserProfile,
     handleLogout,
     handleSignup,
     handleLogin,
     getUser,
-    errorMessage,
+    getProfile,
     clearErrorMessage,
-    loading,
-    loadingUser,
-    token,
   };
 });
