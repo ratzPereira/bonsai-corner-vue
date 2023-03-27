@@ -130,13 +130,6 @@ export const useUserStore = defineStore("users", () => {
         currentUserProfile.value = null;
         loadingUser.value = false;
       });
-    //loadingUser.value = false;
-    console.log("o user dps do get");
-    console.log(currentUserProfile);
-  };
-
-  const clearErrorMessage = () => {
-    return (errorMessage.value = "");
   };
 
   const handleUserProfileEdit = async (data) => {
@@ -151,8 +144,6 @@ export const useUserStore = defineStore("users", () => {
     await axios
       .put("/auth/user", userToUpdate)
       .then((response) => {
-        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-        console.log(response.data);
         currentUserProfile.value = {
           bio: response.data.bio,
           following: response.data.following,
@@ -160,8 +151,6 @@ export const useUserStore = defineStore("users", () => {
           image: response.data.image,
           username: response.data.username,
         };
-        console.log("o user dps do update");
-        console.log(currentUserProfile.value);
         loadingUser.value = false;
       })
       .catch((error) => {
@@ -170,6 +159,24 @@ export const useUserStore = defineStore("users", () => {
         loadingUser.value = false;
       });
     loadingUser.value = false;
+  };
+
+  const followUser = async (username) => {
+    await axios
+      .post(`/profile/${username}/follow`)
+      .then((response) => {})
+      .catch((error) => {});
+  };
+
+  const unFollowUser = async (username) => {
+    await axios
+      .delete(`/profile/${username}/follow`)
+      .then((response) => {})
+      .catch((error) => {});
+  };
+
+  const clearErrorMessage = () => {
+    return (errorMessage.value = "");
   };
 
   return {
@@ -186,5 +193,7 @@ export const useUserStore = defineStore("users", () => {
     getProfile,
     clearErrorMessage,
     handleUserProfileEdit,
+    followUser,
+    unFollowUser,
   };
 });
