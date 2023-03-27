@@ -23,7 +23,6 @@ const handleLogout = async () => {
 
 const goToUsersProfile = () => {
   router.push(`/profile/${user.value.username}`)
-  userStore.getProfile()
 }
 </script>
 <template>

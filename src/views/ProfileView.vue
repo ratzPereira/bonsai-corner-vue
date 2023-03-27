@@ -3,6 +3,6 @@ import Profile from "@/components/Profile.vue";</script>
 
 <template>
   <main>
-    <Profile/>
+    <Profile :key="$route.params.username"/>
   </main>
 </template>

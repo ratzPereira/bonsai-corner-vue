@@ -111,10 +111,11 @@ export const useUserStore = defineStore("users", () => {
     user.value = null;
   };
 
-  const getProfile = async () => {
+  const getProfile = async (username) => {
     await axios
-      .get("/profile/" + user.value.username)
+      .get("/profile/" + username)
       .then((response) => {
+        console.log("a ir buscar o profile");
         currentUserProfile.value = {
           bio: response.data.profile.bio,
           following: response.data.profile.following,
@@ -122,9 +123,8 @@ export const useUserStore = defineStore("users", () => {
           image: response.data.profile.image,
           username: response.data.profile.username,
         };
-
+        console.log("acabei de buscar o profile");
         console.log(currentUserProfile);
-        console.log({ response });
       })
       .catch((error) => {
         //errorMessage.value = error.message;
