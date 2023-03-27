@@ -1,16 +1,20 @@
 <script setup>
-const props = defineProps(['message'])
+
+const title = '404'
+const subTitle = 'Sorry, the page you visited does not exist.'
+
 </script>
 
 <template>
-  <div class="page-not-found">
-    <h1>Oops!</h1>
-    <p>{{ props.message ? props.message : "Sorry, the page you are looking for cannot be found." }}</p>
-  </div>
+  <AResult :status="404" :subTitle="subTitle" :title="title" class="result">
+    <template #extra>
+      <AButton type="primary" @click="$router.push('/')">Back Home</AButton>
+    </template>
+  </AResult>
 </template>
 
 <style scoped>
-.page-not-found {
+.result {
   background-color: aliceblue;
   display: flex;
   flex-direction: column;
@@ -18,17 +22,7 @@ const props = defineProps(['message'])
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
+  padding-bottom: 20%;
 }
 
-h1 {
-  font-size: 5rem;
-  margin-bottom: 1rem;
-}
-
-p {
-  font-size: 2rem;
-  text-align: center;
-  max-width: 50rem;
-  margin-bottom: 2rem;
-}
 </style>
