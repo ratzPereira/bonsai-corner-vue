@@ -11,6 +11,7 @@ export const useUserStore = defineStore("users", () => {
   const currentUserProfile = ref(null);
   const followingUsers = ref([]);
   const followedUsers = ref([]);
+  const userFollow = ref(false);
 
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -198,6 +199,15 @@ export const useUserStore = defineStore("users", () => {
       .catch((error) => {});
   };
 
+  const userFollows = async (searchUsername) => {
+    await getUserFollowings();
+    await getUserFollowers();
+    userFollow.value = followedUsers.value.some(
+      (user) => user === searchUsername
+    );
+    console.log(userFollow.value);
+  };
+
   return {
     user,
     loading,
@@ -207,6 +217,7 @@ export const useUserStore = defineStore("users", () => {
     currentUserProfile,
     followingUsers,
     followedUsers,
+    userFollow,
     handleLogout,
     handleSignup,
     handleLogin,
@@ -218,5 +229,6 @@ export const useUserStore = defineStore("users", () => {
     unFollowUser,
     getUserFollowers,
     getUserFollowings,
+    userFollows,
   };
 });

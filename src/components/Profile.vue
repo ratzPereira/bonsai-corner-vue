@@ -7,7 +7,7 @@ import {useRoute} from "vue-router";
 import UploadModalPhoto from "@/components/UploadModalPhoto.vue";
 
 const userState = useUserStore();
-const {currentUserProfile, loadingUser, user, followingUsers, followedUsers} = storeToRefs(userState)
+const {currentUserProfile, loadingUser, user, followingUsers, followedUsers, userFollow} = storeToRefs(userState)
 
 const route = useRoute();
 const {username} = route.params
@@ -26,6 +26,7 @@ onMounted(() => {
   userState.getProfile(username);
 })
 
+
 </script>
 
 <template>
@@ -43,7 +44,7 @@ onMounted(() => {
         </div>
         <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>
         <div v-if="(username !==user.username)" class="profile_buttons">
-          <AButton @click="handlerFollow">Follow</AButton>
+          <AButton v-if="!userFollow" @click="handlerFollow">Follow</AButton>
           <AButton @click="handlerUnFollow">Following</AButton>
         </div>
 
