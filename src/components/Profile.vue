@@ -2,7 +2,7 @@
 import Container from "@/components/Container.vue";
 import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import UploadModalPhoto from "@/components/UploadModalPhoto.vue";
 
@@ -16,16 +16,21 @@ const isFollowing = ref(false)
 const dummyImage = 'https://dreamvilla.life/wp-content/uploads/2017/07/dummy-profile-pic.png'
 
 const handlerFollow = async () => {
+  console.log('cloquei para seguir o ' + username)
   await userState.followUser(username)
 }
 
 const handlerUnFollow = async () => {
+  console.log('cloquei para nao seguir o ' + username)
   await userState.unFollowUser(username)
 }
 onMounted(() => {
   userState.getProfile(username);
 })
 
+watch(userFollow, () => {
+  // Trigger a re-render of the component when userFollow changes
+})
 
 </script>
 
@@ -38,14 +43,18 @@ onMounted(() => {
 
         <ATypographyTitle :level="2">{{ currentUserProfile.username }}</ATypographyTitle>
         <div class="stats">
-          <span class="followers">{{ followedUsers.length || 0 }} followers</span>
-          <span class="following">{{ followingUsers.length || 0 }} following</span>
+          <span class="followers">{{
+              followedUsers.length || 0
+            }}{{ username === user.username ? ' followers' : ' following' }}</span>
+          <span class="following">{{
+              followingUsers.length || 0
+            }}{{ username === user.username ? ' following' : ' followers' }}</span>
           <span class="posts">{{ currentUserProfile.posts || 0 }} posts</span>
         </div>
         <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>
         <div v-if="(username !==user.username)" class="profile_buttons">
           <AButton v-if="!userFollow" @click="handlerFollow">Follow</AButton>
-          <AButton @click="handlerUnFollow">Following</AButton>
+          <AButton v-if="userFollow" @click="handlerUnFollow">Following</AButton>
         </div>
 
       </div>

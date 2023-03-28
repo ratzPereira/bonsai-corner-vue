@@ -12,7 +12,6 @@ const searchUsername = ref('')
 const {user, loadingUser} = storeToRefs(userStore)
 
 const onSearch = () => {
-  userStore.userFollows(searchUsername.value)
   if (searchUsername.value) {
     router.push(`/profile/${searchUsername.value}`)
     searchUsername.value = ""

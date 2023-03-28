@@ -38,8 +38,6 @@ export const useUserStore = defineStore("users", () => {
           username: response.data.username,
           id: response.data.id,
         };
-
-        console.log({ user });
         localStorage.setItem("token", JSON.stringify(response.data.token));
         token.value = response.data.token;
       })
@@ -100,7 +98,6 @@ export const useUserStore = defineStore("users", () => {
           username: response.data.username,
           id: response.data.id,
         };
-        console.log({ user });
       })
       .catch((error) => {
         //errorMessage.value = error.message;
@@ -169,6 +166,9 @@ export const useUserStore = defineStore("users", () => {
       .post(`/profile/${username}/follow`)
       .then((response) => {})
       .catch((error) => {});
+
+    await getUserFollowings();
+    await userFollows(username);
   };
 
   const unFollowUser = async (username) => {
@@ -176,6 +176,9 @@ export const useUserStore = defineStore("users", () => {
       .delete(`/profile/${username}/follow`)
       .then((response) => {})
       .catch((error) => {});
+
+    await getUserFollowings();
+    await userFollows(username);
   };
 
   const clearErrorMessage = () => {
@@ -200,12 +203,9 @@ export const useUserStore = defineStore("users", () => {
   };
 
   const userFollows = async (searchUsername) => {
-    await getUserFollowings();
-    await getUserFollowers();
-    userFollow.value = followedUsers.value.some(
+    userFollow.value = followingUsers.value.some(
       (user) => user === searchUsername
     );
-    console.log(userFollow.value);
   };
 
   return {
