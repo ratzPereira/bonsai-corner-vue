@@ -16,12 +16,10 @@ const isFollowing = ref(false)
 const dummyImage = 'https://dreamvilla.life/wp-content/uploads/2017/07/dummy-profile-pic.png'
 
 const handlerFollow = async () => {
-  console.log('cloquei para seguir o ' + username)
   await userState.followUser(username)
 }
 
 const handlerUnFollow = async () => {
-  console.log('cloquei para nao seguir o ' + username)
   await userState.unFollowUser(username)
 }
 onMounted(() => {
@@ -53,8 +51,20 @@ watch(userFollow, () => {
         </div>
         <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>
         <div v-if="(username !==user.username)" class="profile_buttons">
-          <AButton v-if="!userFollow" @click="handlerFollow">Follow</AButton>
-          <AButton v-if="userFollow" @click="handlerUnFollow">Following</AButton>
+          <div>
+            <AButton v-if="!userFollow" class="follow_button" @click="handlerFollow">
+              <template #icon>
+                <img alt="Like" class="buttonImage" src="../assets/like.png">
+              </template>
+              follow
+            </AButton>
+            <AButton v-if="userFollow" class="unfollow_button" @click="handlerUnFollow">
+              <template #icon>
+                <img alt="Unlike" class="buttonImage" src="../assets/dont-like.png">
+              </template>
+              unfollow
+            </AButton>
+          </div>
         </div>
 
       </div>
@@ -112,5 +122,33 @@ watch(userFollow, () => {
 .profile_buttons {
   justify-content: space-between;
   align-items: center;
+}
+
+.buttonImage {
+  width: 1.7em; /* or any other desired width */
+  height: 1.7em; /* or any other desired height */
+  margin-right: 20px;
+}
+
+.unfollow_button {
+  background-color: #db2a2a;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Add a transition effect */
+}
+
+.follow_button {
+  background-color: aqua;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Add a transition effect */
+}
+
+.unfollow_button:hover {
+  background-color: #ff4d4d; /* Change the background color */
+  color: black;
+}
+
+.follow_button:hover {
+  background-color: #e8e0e0; /* Change the background color */
+
 }
 </style>
