@@ -70,6 +70,7 @@ export const useUserStore = defineStore("users", () => {
     await axios
       .post("auth", credentials)
       .then((response) => {
+        console.log("a registar novo user");
         user.value = {
           email: response.data.email,
           username: response.data.username,
@@ -80,6 +81,7 @@ export const useUserStore = defineStore("users", () => {
         token.value = response.data.token;
       })
       .catch((error) => {
+        console.log("erro a registar");
         errorMessage.value = error.message;
         loading.value = false;
       });
@@ -109,6 +111,9 @@ export const useUserStore = defineStore("users", () => {
   const handleLogout = async () => {
     localStorage.removeItem("token");
     user.value = null;
+    followingUsers.value = [];
+    followedUsers.value = [];
+    userFollow.value = false;
   };
 
   const getProfile = async (username) => {
@@ -123,6 +128,7 @@ export const useUserStore = defineStore("users", () => {
           image: response.data.profile.image,
           username: response.data.profile.username,
         };
+
         loadingUser.value = false;
       })
       .catch((error) => {
@@ -130,6 +136,7 @@ export const useUserStore = defineStore("users", () => {
         currentUserProfile.value = null;
         loadingUser.value = false;
       });
+    await getUserFollowings();
   };
 
   const handleUserProfileEdit = async (data) => {
@@ -162,6 +169,7 @@ export const useUserStore = defineStore("users", () => {
   };
 
   const followUser = async (username) => {
+    console.log("quero followar");
     await axios
       .post(`/profile/${username}/follow`)
       .then((response) => {})

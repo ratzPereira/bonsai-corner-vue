@@ -35,7 +35,7 @@ watch(userFollow, () => {
 <template>
   <Container>
     <div v-if="currentUserProfile">
-      <div v-if="!loadingUser" class="profile">
+      <div v-if="!loadingUser && user" class="profile">
         <UploadModalPhoto v-if="currentUserProfile.username === user.username" class="edit_btn"></UploadModalPhoto>
         <img :src="currentUserProfile.image || dummyImage" alt="User Photo" class="profile_image"/>
 
