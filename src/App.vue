@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar.vue";
 import {useUserStore} from "@/stores/users";
 import {onMounted} from "vue";
+import Footer from "@/components/Footer.vue";
 
 const userStore = useUserStore()
 
@@ -15,6 +16,7 @@ onMounted(() => {
   <main>
     <Navbar></Navbar>
     <RouterView></RouterView>
+    <Footer></Footer>
   </main>
 </template>
 
