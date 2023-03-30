@@ -1,5 +1,4 @@
 <script setup>
-import Container from "@/components/Container.vue";
 import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
 import {onMounted, ref, watch} from "vue";
@@ -33,50 +32,50 @@ watch(userFollow, () => {
 </script>
 
 <template>
-  <Container>
-    <div v-if="currentUserProfile">
-      <div v-if="!loadingUser && user" class="profile">
-        <UploadModalPhoto v-if="currentUserProfile.username === user.username" class="edit_btn"></UploadModalPhoto>
-        <img :src="currentUserProfile.image || dummyImage" alt="User Photo" class="profile_image"/>
 
-        <ATypographyTitle :level="2">{{ currentUserProfile.username }}</ATypographyTitle>
-        <div class="stats">
+  <div v-if="currentUserProfile">
+    <div v-if="!loadingUser && user" class="profile">
+      <UploadModalPhoto v-if="currentUserProfile.username === user.username" class="edit_btn"></UploadModalPhoto>
+      <img :src="currentUserProfile.image || dummyImage" alt="User Photo" class="profile_image"/>
+
+      <ATypographyTitle :level="2">{{ currentUserProfile.username }}</ATypographyTitle>
+      <div class="stats">
           <span class="followers">{{
               followedUsers.length || 0
             }}{{ username === user.username ? ' followers' : ' following' }}</span>
-          <span class="following">{{
-              followingUsers.length || 0
-            }}{{ username === user.username ? ' following' : ' followers' }}</span>
-          <span class="posts">{{ currentUserProfile.posts || 0 }} posts</span>
+        <span class="following">{{
+            followingUsers.length || 0
+          }}{{ username === user.username ? ' following' : ' followers' }}</span>
+        <span class="posts">{{ currentUserProfile.posts || 0 }} posts</span>
+      </div>
+      <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>
+      <div v-if="(username !==user.username)" class="profile_buttons">
+        <div>
+          <AButton v-if="!userFollow" class="follow_button" @click="handlerFollow">
+            <template #icon>
+              <img alt="Like" class="buttonImage" src="../assets/like.png">
+            </template>
+            follow
+          </AButton>
+          <AButton v-if="userFollow" class="unfollow_button" @click="handlerUnFollow">
+            <template #icon>
+              <img alt="Unlike" class="buttonImage" src="../assets/dont-like.png">
+            </template>
+            unfollow
+          </AButton>
         </div>
-        <p class="bio">{{ currentUserProfile.bio || 'My bio here' }}</p>
-        <div v-if="(username !==user.username)" class="profile_buttons">
-          <div>
-            <AButton v-if="!userFollow" class="follow_button" @click="handlerFollow">
-              <template #icon>
-                <img alt="Like" class="buttonImage" src="../assets/like.png">
-              </template>
-              follow
-            </AButton>
-            <AButton v-if="userFollow" class="unfollow_button" @click="handlerUnFollow">
-              <template #icon>
-                <img alt="Unlike" class="buttonImage" src="../assets/dont-like.png">
-              </template>
-              unfollow
-            </AButton>
-          </div>
-        </div>
-
       </div>
 
-      <div v-else class="spinner">
-        <ASpin/>
-      </div>
     </div>
-    <div v-if="!currentUserProfile && !loadingUser">
-      <h2>User Not Found</h2>
+
+    <div v-else class="spinner">
+      <ASpin/>
     </div>
-  </Container>
+  </div>
+  <div v-if="!currentUserProfile && !loadingUser">
+    <h2>User Not Found</h2>
+  </div>
+
 </template>
 
 <style scoped>

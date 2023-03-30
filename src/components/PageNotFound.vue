@@ -1,5 +1,7 @@
 <script setup>
 
+import Footer from "@/components/Footer.vue";
+
 const title = '404'
 const subTitle = 'Sorry, the page you visited does not exist.'
 
@@ -11,6 +13,7 @@ const subTitle = 'Sorry, the page you visited does not exist.'
       <AButton type="primary" @click="$router.push('/')">Back Home</AButton>
     </template>
   </AResult>
+  <Footer></Footer>
 </template>
 
 <style scoped>

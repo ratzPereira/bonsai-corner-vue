@@ -1,5 +1,4 @@
 <script setup>
-import Container from "@/components/Container.vue";
 import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
 import Cards from "@/components/Cards.vue";
@@ -12,15 +11,14 @@ const {user, loadingUser} = storeToRefs(userStore);
 
 <template>
 
-  <Container>
-    <div v-if="!loadingUser">
-      <Cards v-if="user"/>
-      <LoginMessage v-else/>
-    </div>
-    <div v-else class="spinner">
-      <ASpin/>
-    </div>
-  </Container>
+  <div v-if="!loadingUser">
+    <Cards v-if="user"/>
+    <LoginMessage v-else/>
+  </div>
+  <div v-else class="spinner">
+    <ASpin/>
+  </div>
+
 </template>
 
 <style scoped>
