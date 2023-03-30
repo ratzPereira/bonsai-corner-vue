@@ -14,7 +14,6 @@ export const usePostsStore = defineStore("posts", () => {
     await axios
       .get("/bonsai/feed")
       .then((response) => {
-        console.log({ response });
         posts.value = response.data;
       })
       .catch((error) => {});
@@ -23,9 +22,23 @@ export const usePostsStore = defineStore("posts", () => {
   const handleNewPost = async (post) => {
     loading.value = true;
 
-    const { name, age, description, images, species, interventions } = post;
+    const { name, age, description, species } = post;
 
-    validatePost(name, errorMessage, description, species, age, images);
+    const isValid = validatePost(name, errorMessage, description, species, age);
+
+    if (!isValid) {
+      loading.value = false;
+      return;
+    }
+
+    await axios
+      .post("/bonsai", post)
+      .then((response) => {
+        console.log({ response });
+      })
+      .catch((error) => {
+        errorMessage.value = "error creating new post";
+      });
 
     loading.value = false;
   };
@@ -38,25 +51,28 @@ export const usePostsStore = defineStore("posts", () => {
     age,
     images
   ) => {
-    if (String(name) <= 3) {
-      return (errorMessage.value = "Please insert valid name!");
+    let isValid = true;
+
+    if (String(name).length < 3) {
+      errorMessage.value = "Please insert valid name!";
+      isValid = false;
     }
 
-    if (String(description) <= 5) {
-      return (errorMessage.value = "The description is too short");
+    if (String(description).length < 5) {
+      errorMessage.value = "The description is too short";
+      isValid = false;
     }
 
-    if (String(species) <= 3) {
-      return (errorMessage.value = "The species name is too short");
+    if (String(species).length < 3) {
+      errorMessage.value = "The species name is too short";
+      isValid = false;
     }
-
-    if (age < 0) {
-      return (errorMessage.value = "The age must be greater than zero");
+    console.log(age);
+    if (age < 0 || !age) {
+      errorMessage.value = "The age must be greater than zero";
+      isValid = false;
     }
-
-    if (!images) {
-      return (errorMessage.value = "Please add at least one image");
-    }
+    return isValid;
   };
 
   return {

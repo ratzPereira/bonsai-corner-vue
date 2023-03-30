@@ -23,19 +23,27 @@ const post = reactive({
 
 const showModal = () => {
   errorMessage.value = ''
+  clearData()
   visible.value = true;
 };
+
 const handleOk = async e => {
-
   loading.value = true
-
-  await uploadImagesToBucket(imagesToUpload)
+  checkForImages()
+  if (errorMessage.value) {
+    loading.value = false
+    return
+  }
   await postStore.handleNewPost(post)
 
+  if (!errorMessage.value) {
+    loading.value = false
+    visible.value = false;
+    clearData()
+  }
+  await uploadImagesToBucket(imagesToUpload)
   loading.value = false
-  //visible.value = false;
 };
-
 
 const handleUploadChange = (event) => {
   const files = event.target.files;
@@ -55,6 +63,25 @@ const uploadImagesToBucket = async (images) => {
   }
 }
 
+const checkForImages = () => {
+  console.log(imagesToUpload.length)
+  if (imagesToUpload.length === 0) {
+    errorMessage.value = 'please upload one photo'
+    loading.value = false
+  } else {
+    errorMessage.value = ''
+  }
+}
+
+const clearData = () => {
+  post.name = ''
+  post.age = ''
+  post.species = ''
+  post.interventions = ''
+  post.images = []
+  post.description = ''
+
+}
 </script>
 
 <template>
