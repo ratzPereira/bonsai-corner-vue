@@ -25,13 +25,14 @@ const showModal = () => {
   errorMessage.value = ''
   visible.value = true;
 };
-const handleOk = e => {
+const handleOk = async e => {
 
   loading.value = true
-  console.log('imagens na array')
-  console.log(imagesToUpload)
-  uploadImagesToBucket(imagesToUpload)
-  postStore.handleNewPost(post)
+
+  await uploadImagesToBucket(imagesToUpload)
+  await postStore.handleNewPost(post)
+
+  loading.value = false
   //visible.value = false;
 };
 
@@ -44,13 +45,14 @@ const handleUploadChange = (event) => {
 };
 
 const uploadImagesToBucket = async (images) => {
-  console.log('imagens a chegar')
-  console.log({images})
-  await images.forEach((image) => {
+  for (const image of images) {
     const fileName = Math.floor(Math.random() * 1000000000000)
-    const response = supabase.storage.from('bonsai').upload('public/' + fileName, image)
-    console.log({response})
-  })
+    const {data, error} = await supabase.storage.from('bonsai').upload('public/' + fileName, image)
+    if (error) {
+      //TODO: handle error here
+    }
+    post.images.push(data.path)
+  }
 }
 
 </script>
