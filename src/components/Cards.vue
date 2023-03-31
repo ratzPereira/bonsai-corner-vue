@@ -23,8 +23,6 @@ const fetchNextSet = async () => {
 }
 
 onMounted(() => {
-  console.log(Array(posts).length)
-  console.log(posts)
   fetchData()
 })
 

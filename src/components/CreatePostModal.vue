@@ -28,21 +28,26 @@ const showModal = () => {
 };
 
 const handleOk = async e => {
-  loading.value = true
-  checkForImages()
-  if (errorMessage.value) {
-    loading.value = false
-    return
-  }
-  await postStore.handleNewPost(post)
 
-  if (!errorMessage.value) {
-    loading.value = false
+  try {
+    loading.value = true;
+
+    if (!validatePost(post)) {
+      loading.value = false;
+      return;
+    }
+
+    errorMessage.value = ''
+    await uploadImagesToBucket(imagesToUpload);
+    await postStore.handleNewPost(post);
     visible.value = false;
-    clearData()
+
+  } catch (error) {
+    errorMessage.value = error.message
+
+  } finally {
+    loading.value = false;
   }
-  await uploadImagesToBucket(imagesToUpload)
-  loading.value = false
 };
 
 const handleUploadChange = (event) => {
@@ -63,16 +68,6 @@ const uploadImagesToBucket = async (images) => {
   }
 }
 
-const checkForImages = () => {
-  console.log(imagesToUpload.length)
-  if (imagesToUpload.length === 0) {
-    errorMessage.value = 'please upload one photo'
-    loading.value = false
-  } else {
-    errorMessage.value = ''
-  }
-}
-
 const clearData = () => {
   post.name = ''
   post.age = ''
@@ -80,8 +75,37 @@ const clearData = () => {
   post.interventions = ''
   post.images = []
   post.description = ''
-
+  imagesToUpload.length = 0;
 }
+
+const validatePost = (post) => {
+  let isValid = true;
+  if (imagesToUpload.length === 0) {
+    errorMessage.value = 'please upload one photo'
+    isValid = false
+  }
+  if (String(post.name).length < 3) {
+    errorMessage.value = "Please insert valid name!";
+    isValid = false;
+  }
+
+  if (String(post.description).length < 5) {
+    errorMessage.value = "The description is too short";
+    isValid = false;
+  }
+
+  if (String(post.species).length < 3) {
+    errorMessage.value = "The species name is too short";
+    isValid = false;
+  }
+
+  if (post.age < 0 || !Number.isInteger(post.age)) {
+    errorMessage.value = "Please insert a valid age!";
+    isValid = false;
+  }
+
+  return isValid;
+};
 </script>
 
 <template>
