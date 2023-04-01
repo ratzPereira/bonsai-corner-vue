@@ -33,11 +33,14 @@ export const usePostsStore = defineStore("posts", () => {
     loading.value = false;
   };
 
+  const getMyPosts = async () => {};
+
   return {
     posts,
     errorMessage,
     loading,
     getPosts,
     handleNewPost,
+    getMyPosts,
   };
 });

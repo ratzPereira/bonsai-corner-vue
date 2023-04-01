@@ -7,7 +7,10 @@ import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
 
 const router = useRouter();
+
 const userStore = useUserStore();
+
+
 const searchUsername = ref('')
 const {user, loadingUser} = storeToRefs(userStore)
 
@@ -26,7 +29,10 @@ const goToUsersProfile = () => {
   router.push(`/profile/${user.value.username}`)
   userStore.getUserFollowers()
   userStore.getUserFollowings()
+}
 
+const getMyPosts = async () => {
+  await router.push('/my-posts')
 }
 </script>
 <template>
@@ -44,6 +50,7 @@ const goToUsersProfile = () => {
               style="width: 200px"
               @search="onSearch"
           />
+          <AButton v-if="user" class="my_posts_btn" type="primary" @click="getMyPosts">My posts</AButton>
         </div>
         <div v-if="!loadingUser" class="content">
           <div v-if="!user" class="left-content">
@@ -90,5 +97,9 @@ const goToUsersProfile = () => {
 
 .left-content button {
   margin-left: 10px;
+}
+
+.my_posts_btn {
+  margin-left: 30px;
 }
 </style>
