@@ -1,6 +1,7 @@
 <script setup>
 
 const props = defineProps(['post']);
+const baseUrl = 'https://gxqelydwsyyxugmqgmcv.supabase.co/storage/v1/object/public/bonsai/'
 
 const togglePublic = async () => {
 
@@ -15,11 +16,11 @@ const formatDate = (dateString) => {
 
 <template>
   <ACard v-for="post in props.post" v-if="Object.keys(post).length > 0" :key="post.id" class="plant-card">
-    <div slot="title">
+    <div slot="title" class="plant-card-title">
       {{ post.name }}
     </div>
     <div v-if="post.images">
-      <img v-for="(image, index) in post.images" :key="index" :src="image" class="plant-image"/>
+      <img v-for="(image, index) in post.images" :key="index" :src="baseUrl+image" class="plant-image"/>
     </div>
     <div class="plant-details">
       <div class="plant-species">
@@ -65,7 +66,7 @@ const formatDate = (dateString) => {
 <style scoped>
 
 .plant-card {
-  width: 400px;
+  width: 600px;
   margin: 20px;
   border: 1px solid #e8e8e8;
   border-radius: 5px;
@@ -90,8 +91,9 @@ const formatDate = (dateString) => {
 
 .plant-image {
   width: 100%;
-  height: auto;
+  height: 150px;
   margin-bottom: 10px;
+  object-fit: contain;
 }
 
 .plant-details {
@@ -107,5 +109,18 @@ const formatDate = (dateString) => {
 .plant-bonsai-updated-date,
 .plant-favorites-count {
   margin-bottom: 10px;
+}
+
+.plant-card-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.plant-card div[slot="title"] {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
 }
 </style>

@@ -1,6 +1,7 @@
 <script setup>
 
 const props = defineProps(['post']);
+const baseUrl = 'https://gxqelydwsyyxugmqgmcv.supabase.co/storage/v1/object/public/bonsai'
 
 const formatDate = (dateString) => {
   const options = {year: 'numeric', month: 'long', day: 'numeric'};
@@ -15,7 +16,7 @@ const formatDate = (dateString) => {
       {{ post.name }}
     </div>
     <div v-if="post.images">
-      <img v-for="(image, index) in post.images" :key="index" :src="image" class="plant-image"/>
+      <img v-for="(image, index) in post.images" :key="index" :src="baseUrl+image" class="plant-image"/>
     </div>
     <div class="plant-details">
       <div class="plant-species">
