@@ -93,39 +93,107 @@ onMounted(() => {
       </div>
       <div class="plant-public">
         <strong>Public:</strong> {{ post.isPublic ? 'Yes' : 'No' }}
+      </div>
+      <div class="plant-card-buttons-container">
         <button class="share-button" @click="togglePublic">
           {{ post.isPublic ? 'Make Private' : 'Share' }}
+        </button>
+        <button class="edit-button" @click="editPost(post)">
+          Edit post
+        </button>
+        <button class="delete-button" @click="deletePost(post)">
+          Delete post
         </button>
       </div>
     </div>
   </ACard>
-
 </template>
 
-<style scoped>
 
-.plant-card {
-  width: 600px;
-  margin: 20px;
-  border: 1px solid #e8e8e8;
-  border-radius: 5px;
+<style scoped>
+.plant-details {
+  margin-bottom: 50px;
+}
+
+.plant-card-buttons-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 96px 40px;
+
+}
+
+.plant-public button {
+  padding: 8px;
+  margin-left: 5px;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .share-button {
-  border-radius: 20px;
-  border: none;
-  padding: 5px 15px;
-  margin-top: 10px;
-  margin-left: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
   background-color: #4CAF50;
-  color: #fff;
+}
+
+.edit-button {
+  background-color: #2196F3;
+}
+
+.delete-button {
+  background-color: #f44336;
 }
 
 .share-button:hover {
   background-color: #3e8e41;
+}
+
+.edit-button:hover {
+  background-color: #0b7dda;
+}
+
+.delete-button:hover {
+  background-color: #e83030;
+}
+
+/* Add the following rules for the button icons */
+
+.share-button:before,
+.edit-button:before,
+.delete-button:before {
+  display: inline-block;
+  margin-right: 5px;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.share-button:before {
+  content: "\f1e0";
+}
+
+.edit-button:before {
+  content: "\f044";
+}
+
+.delete-button:before {
+  content: "\f2ed";
+}
+
+.plant-card {
+  width: 600px;
+  margin: 20px 20px 0;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+}
+
+.swiper-container {
+  overflow: visible;
 }
 
 .plant-image {
@@ -146,6 +214,7 @@ onMounted(() => {
 .plant-interventions,
 .plant-bonsai-creation-date,
 .plant-bonsai-updated-date,
+.plant-public,
 .plant-favorites-count {
   margin-bottom: 10px;
 }
@@ -183,7 +252,6 @@ onMounted(() => {
   border-radius: 50%;
   font-size: 14px;
   text-align: center;
-
   justify-content: center;
   align-items: center;
 }
