@@ -9,10 +9,10 @@ import {storeToRefs} from "pinia";
 const router = useRouter();
 
 const userStore = useUserStore();
-
+const {user, loadingUser} = storeToRefs(userStore)
 
 const searchUsername = ref('')
-const {user, loadingUser} = storeToRefs(userStore)
+const isMyPosts = ref(false);
 
 const onSearch = () => {
   if (searchUsername.value) {
@@ -32,8 +32,10 @@ const goToUsersProfile = () => {
 }
 
 const getMyPosts = async () => {
-  await router.push('/my-posts')
+  isMyPosts.value = !isMyPosts.value;
+  await router.push(isMyPosts.value ? '/my-posts' : '/');
 }
+
 </script>
 <template>
 
@@ -50,7 +52,10 @@ const getMyPosts = async () => {
               style="width: 200px"
               @search="onSearch"
           />
-          <AButton v-if="user" class="my_posts_btn" type="primary" @click="getMyPosts">My posts</AButton>
+          <AButton v-if="user" class="my_posts_btn" type="primary" @click="getMyPosts">
+            {{ isMyPosts ? 'My Feed' : 'My Posts' }}
+          </AButton>
+
         </div>
         <div v-if="!loadingUser" class="content">
           <div v-if="!user" class="left-content">
