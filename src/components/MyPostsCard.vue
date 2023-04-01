@@ -1,6 +1,16 @@
 <script setup>
 
 const props = defineProps(['post']);
+
+const togglePublic = async () => {
+
+}
+
+const formatDate = (dateString) => {
+  const options = {year: 'numeric', month: 'long', day: 'numeric'};
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', options);
+}
 </script>
 
 <template>
@@ -27,17 +37,25 @@ const props = defineProps(['post']);
       <div class="plant-interventions">
         <strong>Interventions:</strong>
         <ul>
-          <li v-for="(intervention, index) in post.interventions" :key="index">{{ intervention }}</li>
+          <li v-for="(intervention, index) in post.interventions" :key="index">
+            {{ intervention ? intervention : 'No interventions yet' }}
+          </li>
         </ul>
       </div>
       <div class="plant-bonsai-creation-date">
-        <strong>Bonsai creation date:</strong> {{ post.bonsaiCreationDate }}
+        <strong>Bonsai creation date:</strong> {{ formatDate(post.bonsaiCreationDate) }}
       </div>
       <div class="plant-bonsai-updated-date">
-        <strong>Bonsai updated date:</strong> {{ post.bonsaiUpdatedDate }}
+        <strong>Bonsai updated date:</strong> {{ formatDate(post.bonsaiUpdatedDate) }}
       </div>
       <div class="plant-favorites-count">
         <strong>Favorites count:</strong> {{ post.favoritesCount }}
+      </div>
+      <div class="plant-public">
+        <strong>Public:</strong> {{ post.isPublic ? 'Yes' : 'No' }}
+        <button class="share-button" @click="togglePublic">
+          {{ post.isPublic ? 'Make Private' : 'Share' }}
+        </button>
       </div>
     </div>
   </ACard>
@@ -51,6 +69,23 @@ const props = defineProps(['post']);
   margin: 20px;
   border: 1px solid #e8e8e8;
   border-radius: 5px;
+}
+
+.share-button {
+  border-radius: 20px;
+  border: none;
+  padding: 5px 15px;
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.share-button:hover {
+  background-color: #3e8e41;
 }
 
 .plant-image {

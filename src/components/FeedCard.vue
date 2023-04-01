@@ -1,6 +1,12 @@
 <script setup>
 
 const props = defineProps(['post']);
+
+const formatDate = (dateString) => {
+  const options = {year: 'numeric', month: 'long', day: 'numeric'};
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', options);
+}
 </script>
 
 <template>
@@ -31,10 +37,10 @@ const props = defineProps(['post']);
         </ul>
       </div>
       <div class="plant-bonsai-creation-date">
-        <strong>Bonsai creation date:</strong> {{ post.bonsaiCreationDate }}
+        <strong>Bonsai creation date:</strong> {{ formatDate(post.bonsaiCreationDate) }}
       </div>
       <div class="plant-bonsai-updated-date">
-        <strong>Bonsai updated date:</strong> {{ post.bonsaiUpdatedDate }}
+        <strong>Bonsai updated date:</strong> {{ formatDate(post.bonsaiUpdatedDate) }}
       </div>
       <div class="plant-favorites-count">
         <strong>Favorites count:</strong> {{ post.favoritesCount }}
