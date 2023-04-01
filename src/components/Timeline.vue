@@ -1,7 +1,7 @@
 <script setup>
 import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
-import Cards from "@/components/Cards.vue";
+import Cards from "@/components/FeedCards.vue";
 import LoginMessage from "@/components/LoginMessage.vue";
 
 const userStore = useUserStore();

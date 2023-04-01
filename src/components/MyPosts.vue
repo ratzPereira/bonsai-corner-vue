@@ -1,16 +1,21 @@
 <script setup>
-import {onMounted} from "vue";
 import {usePostsStore} from "@/stores/posts";
+import {storeToRefs} from "pinia";
+import MyPostsCards from "@/components/MyPostsCards.vue";
 
 const postsStore = usePostsStore();
+const {loading, myPosts} = storeToRefs(postsStore);
 
-onMounted(() => {
-  postsStore.getMyPosts()
-})
 </script>
 
 <template>
 
+  <div>
+    <MyPostsCards/>
+  </div>
+  <div v-if="loading" class="spinner">
+    <ASpin/>
+  </div>
 </template>
 
 <style scoped>

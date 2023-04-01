@@ -1,6 +1,6 @@
 <script setup>
 
-import Card from "@/components/Card.vue";
+import Card from "@/components/FeedCard.vue";
 import {useUserStore} from "@/stores/users";
 import {storeToRefs} from "pinia";
 import {onMounted, ref} from "vue";

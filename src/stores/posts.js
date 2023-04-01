@@ -7,6 +7,7 @@ export const usePostsStore = defineStore("posts", () => {
   const user = useUserStore();
 
   const posts = ref([]);
+  const myPosts = ref([]);
   const loading = ref(false);
   const errorMessage = ref("");
 
@@ -21,7 +22,6 @@ export const usePostsStore = defineStore("posts", () => {
 
   const handleNewPost = async (post) => {
     loading.value = true;
-    console.log(post);
     await axios
       .post("/bonsai", post)
       .then((response) => {
@@ -33,12 +33,26 @@ export const usePostsStore = defineStore("posts", () => {
     loading.value = false;
   };
 
-  const getMyPosts = async () => {};
+  const getMyPosts = async () => {
+    loading.value = true;
+
+    await axios
+      .get("/bonsai")
+      .then((response) => {
+        console.log(response.data);
+        myPosts.value = response.data;
+        loading.value = false;
+      })
+      .catch((error) => {
+        loading.value = false;
+      });
+  };
 
   return {
     posts,
     errorMessage,
     loading,
+    myPosts,
     getPosts,
     handleNewPost,
     getMyPosts,
