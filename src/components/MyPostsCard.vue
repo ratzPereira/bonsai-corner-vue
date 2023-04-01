@@ -1,10 +1,15 @@
 <script setup>
+import 'swiper/swiper-bundle.css';
+import {onMounted} from "vue";
+import 'swiper/css/navigation';
+import SwiperCore, {Navigation, Pagination} from 'swiper';
 
-const props = defineProps(['post']);
+SwiperCore.use([Navigation, Pagination]);
+
 const baseUrl = 'https://gxqelydwsyyxugmqgmcv.supabase.co/storage/v1/object/public/bonsai/'
 
-const togglePublic = async () => {
 
+const togglePublic = async () => {
 }
 
 const formatDate = (dateString) => {
@@ -12,15 +17,42 @@ const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-GB', options);
 }
+SwiperCore.use([Navigation, Pagination]);
+
+const props = defineProps(['post']);
+onMounted(() => {
+  SwiperCore.use([Navigation, Pagination]);
+  const swiper = new SwiperCore('.mySwiper', {
+    slidesPerView: 1,
+    spaceBetween: 3000,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+});
 </script>
 
 <template>
   <ACard v-for="post in props.post" v-if="Object.keys(post).length > 0" :key="post.id" class="plant-card">
-    <div slot="title" class="plant-card-title">
-      {{ post.name }}
-    </div>
-    <div v-if="post.images">
-      <img v-for="(image, index) in post.images" :key="index" :src="baseUrl+image" class="plant-image"/>
+    <div v-if="post.images.length > 0">
+      <div class="swiper-container mySwiper">
+        <div class="swiper-wrapper">
+          <div v-for="(image, index) in post.images" :key="index" class="swiper-slide">
+            <img :src="baseUrl + image" class="plant-image"/>
+          </div>
+        </div>
+        <!--        <div v-if="post.images.length > 1">-->
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <!--        </div>-->
+
+      </div>
     </div>
     <div class="plant-details">
       <div class="plant-species">
@@ -122,5 +154,39 @@ const formatDate = (dateString) => {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: calc(30% - 15px);
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  z-index: 10;
+  cursor: pointer;
+  background-color: black;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
 }
 </style>

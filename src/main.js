@@ -7,6 +7,9 @@ import Antd from "ant-design-vue";
 import "./axios.js";
 import "ant-design-vue/dist/antd.css";
 import "./assets/main.css";
+import "swiper/swiper-bundle.css";
+import VueAwesomeSwiper from "vue-awesome-swiper";
+import VueCarousel from "vue-carousel";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -21,10 +24,11 @@ import "@fortawesome/fontawesome-free/css/all.css";
 library.add(faFacebookF, faTwitter, faInstagram);
 
 const app = createApp(App);
-
+app.use(VueAwesomeSwiper);
 app.use(createPinia());
 app.use(router);
 app.use(Antd);
+app.use(VueCarousel);
 app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.mount("#app");
