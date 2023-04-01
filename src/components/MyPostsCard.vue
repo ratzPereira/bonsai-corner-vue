@@ -6,8 +6,8 @@ import SwiperCore, {Navigation, Pagination} from 'swiper';
 
 SwiperCore.use([Navigation, Pagination]);
 
+const props = defineProps(['post']);
 const baseUrl = 'https://gxqelydwsyyxugmqgmcv.supabase.co/storage/v1/object/public/bonsai/'
-
 
 const togglePublic = async () => {
 }
@@ -17,9 +17,8 @@ const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-GB', options);
 }
-SwiperCore.use([Navigation, Pagination]);
 
-const props = defineProps(['post']);
+
 onMounted(() => {
   SwiperCore.use([Navigation, Pagination]);
   const swiper = new SwiperCore('.mySwiper', {
@@ -35,10 +34,14 @@ onMounted(() => {
     },
   });
 });
+
 </script>
 
 <template>
   <ACard v-for="post in props.post" v-if="Object.keys(post).length > 0" :key="post.id" class="plant-card">
+    <div slot="title" class="plant-card-title ">
+      {{ post.name }}
+    </div>
     <div v-if="post.images.length > 0">
       <div class="swiper-container mySwiper">
         <div class="swiper-wrapper">
@@ -46,12 +49,9 @@ onMounted(() => {
             <img :src="baseUrl + image" class="plant-image"/>
           </div>
         </div>
-        <!--        <div v-if="post.images.length > 1">-->
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
-        <!--        </div>-->
-
       </div>
     </div>
     <div class="plant-details">
@@ -163,21 +163,20 @@ onMounted(() => {
 
 .swiper-button-prev,
 .swiper-button-next {
-  position: absolute;
   top: calc(30% - 15px);
-  transform: translateY(-50%);
+  transform: translateY(-10%);
   width: 30px;
   height: 30px;
   margin-top: -15px;
   z-index: 10;
   cursor: pointer;
-  background-color: black;
+  background-color: #121312;
   color: #fff;
   border: none;
   border-radius: 50%;
   font-size: 14px;
   text-align: center;
-  display: flex;
+
   justify-content: center;
   align-items: center;
 }
