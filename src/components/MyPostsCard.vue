@@ -1,6 +1,6 @@
 <script setup>
 import 'swiper/swiper-bundle.css';
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import 'swiper/css/navigation';
 import SwiperCore, {Navigation, Pagination} from 'swiper';
 import ImagePopup from "@/components/ImagePopup.vue";
@@ -11,6 +11,9 @@ const props = defineProps(['post']);
 
 const showPopup = ref(false);
 const currentImageUrl = ref('');
+
+const showButton = ref(false);
+const scrollOffset = 200;
 
 const baseUrl = 'https://gxqelydwsyyxugmqgmcv.supabase.co/storage/v1/object/public/bonsai/'
 
@@ -23,6 +26,16 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString('en-GB', options);
 }
 
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
+
+const handleScroll = () => {
+  showButton.value = window.pageYOffset > scrollOffset;
+};
 
 onMounted(() => {
   SwiperCore.use([Navigation, Pagination]);
@@ -38,6 +51,11 @@ onMounted(() => {
       clickable: true,
     },
   });
+  window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
 });
 
 </script>
@@ -105,12 +123,32 @@ onMounted(() => {
           Delete post
         </button>
       </div>
+      <button v-if="showButton" class="go-top-button" @click="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+      </button>
     </div>
   </ACard>
 </template>
 
 
 <style scoped>
+
+.go-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 10%;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.fa-chevron-up {
+  font-size: 20px;
+}
+
 .plant-details {
   margin-bottom: 50px;
 }
