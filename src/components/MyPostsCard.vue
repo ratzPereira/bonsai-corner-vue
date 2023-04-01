@@ -1,12 +1,17 @@
 <script setup>
 import 'swiper/swiper-bundle.css';
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import 'swiper/css/navigation';
 import SwiperCore, {Navigation, Pagination} from 'swiper';
+import ImagePopup from "@/components/ImagePopup.vue";
 
 SwiperCore.use([Navigation, Pagination]);
 
 const props = defineProps(['post']);
+
+const showPopup = ref(false);
+const currentImageUrl = ref('');
+
 const baseUrl = 'https://gxqelydwsyyxugmqgmcv.supabase.co/storage/v1/object/public/bonsai/'
 
 const togglePublic = async () => {
@@ -46,13 +51,15 @@ onMounted(() => {
       <div class="swiper-container mySwiper">
         <div class="swiper-wrapper">
           <div v-for="(image, index) in post.images" :key="index" class="swiper-slide">
-            <img :src="baseUrl + image" class="plant-image"/>
+            <img :src="baseUrl + image" class="plant-image"
+                 @click="showPopup = true; currentImageUrl = baseUrl + image">
           </div>
         </div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
       </div>
+      <image-popup :image-url="currentImageUrl" :show-popup="showPopup" @close-popup="showPopup = false"></image-popup>
     </div>
     <div class="plant-details">
       <div class="plant-species">
