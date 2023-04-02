@@ -10,6 +10,7 @@ import "./assets/main.css";
 import "swiper/swiper-bundle.css";
 import VueAwesomeSwiper from "vue-awesome-swiper";
 import VueCarousel from "vue-carousel";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -18,8 +19,6 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
-import "@fortawesome/fontawesome-free/css/all.css";
 
 library.add(faFacebookF, faTwitter, faInstagram);
 

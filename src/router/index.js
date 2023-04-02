@@ -4,6 +4,7 @@ import ProfileView from "@/views/ProfileView.vue";
 import { authGuard } from "@/guards/AuthGuard";
 import PageNotFound from "@/components/PageNotFound.vue";
 import MyPosts from "@/components/MyPosts.vue";
+import GenericError from "@/components/GenericError.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,9 +27,18 @@ const router = createRouter({
       beforeEnter: authGuard,
     },
     {
+      path: "/error",
+      component: GenericError,
+    },
+
+    {
       path: "/:pathMatch(.*)*",
       name: "page not found",
       component: PageNotFound,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "/error",
     },
   ],
 });

@@ -41,6 +41,11 @@ export default {
   z-index: 9999;
 }
 
+.image-popup img {
+  max-width: 70%; /* Adjust this value to your preference */
+  max-height: 70%; /* Adjust this value to your preference */
+}
+
 .popup-background {
   position: fixed;
   top: 0;

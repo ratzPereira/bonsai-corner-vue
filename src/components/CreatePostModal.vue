@@ -106,11 +106,32 @@ const validatePost = (post) => {
 
   return isValid;
 };
+
+//hide new post button logic
+const hideButton = ref(false);
+
+let prevScrollPosition = 0;
+
+const handleScroll = () => {
+  const currentScrollPosition = window.scrollY;
+  const direction = currentScrollPosition > prevScrollPosition ? 'down' : 'up';
+
+  if (direction === 'down' && !hideButton.value) {
+    hideButton.value = true;
+  } else if (direction === 'up' && hideButton.value) {
+    hideButton.value = false;
+  }
+
+  prevScrollPosition = currentScrollPosition;
+};
+
+window.addEventListener('scroll', handleScroll);
+
 </script>
 
 <template>
   <div>
-    <AButton class="btn" type="primary" @click="showModal">New Post</AButton>
+    <AButton :class="{ 'hide': hideButton }" class="btn" type="primary" @click="showModal">New Post</AButton>
     <AModal v-model:visible="visible" title="New Post" @ok="handleOk">
       <div v-if="!loading">
         <AForm :form="post">
@@ -154,4 +175,14 @@ const validatePost = (post) => {
   align-items: center;
   height: 120px;
 }
+
+.btn {
+  position: fixed;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hide {
+  opacity: 0;
+}
+
 </style>

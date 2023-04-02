@@ -235,8 +235,8 @@ onUnmounted(() => {
 }
 
 .plant-image {
-  width: 100%;
-  height: 150px;
+  width: 110%;
+  height: 550px;
   margin-bottom: 10px;
   object-fit: contain;
 }
